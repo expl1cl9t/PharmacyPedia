@@ -1,6 +1,22 @@
 <x-main-layout title="Главная страница">
-    <style>
-    </style>
+    <livewire:search/>
+    <div id="backet" class="absolute w-full h-screen bg-black z-20 bg-opacity-40 hidden flex-col items-center justify-center">
+        <button id="closeBacket" class="absolute top-5 right-5 text-5xl text-white">X</button>
+        <div class="w-1/2 h-auto bg-white flex flex-col rounded-2xl p-5 justify-center items-center gap-6">
+            @forelse(auth()->user()->medicineInBucet as $med)
+                <div class="flex flex-row w-full h-auto p-5 justify-between bg-gray-400 items-center text-xl text-white">
+                    <p>{{$med->Name}}</p>
+                    <p>{{$med->Cost}}</p>
+                    <p>{{$med->type->TypeName}}</p>
+                    <p>{{$med->isOnlyPrescription == 1 ? 'Только по рецепту' : 'Без рецепта'}}</p>
+                    <img class="w-16 h-16" src="{{asset('storage/'.$med->ImageLink)}}" alt="">
+                </div>
+            @empty
+                <p>Вы пока не добавили товаров в корзину!</p>
+            @endforelse
+            <button>Оформить заказ</button>
+        </div>
+    </div>
     <div class="w-full h-screen flex flex-col gap-6" style="background-image: url('{{asset('storage/backs/indexFont.jpg')}}')">
         <div class="w-full h-1/6 bg-opacity-60 bg-amber-100 flex flex-row justify-between p-5">
             <div class="flex flex-row items-center gap-6">
@@ -23,12 +39,13 @@
                     </div>
                 </div>
                 <button class="w-14 h-14"><img src="{{asset('storage/other/mobila.png')}}" alt=""></button>
+                <button id="openBacket" class="w-14 h-14"><img src="{{asset('storage/other/cart.png')}}"></button>
             </div>
             <div class="flex flex-row items-center">
                 <img class="h-64 w-64" src="{{asset('storage/other/logo.png')}}" alt="">
             </div>
             <div class="w-auto flex flex-row items-center gap-6">
-                <input type="text" placeholder="я ищу, например, ингавирин" class="text-sm w-96 h-1/2 pl-20 pr-20 border-gray-500 border-2 text-gray-500 rounded-3xl bg-white">
+                <input id="searchButton" type="text" placeholder="я ищу, например, ингавирин" class="text-sm w-96 h-1/2 pl-20 pr-20 border-gray-500 border-2 text-gray-500 rounded-3xl bg-white">
                 <button title="Бот-помошник" class="w-16 h-16"><img src="{{asset('storage/other/mail.png')}}" alt=""></button>
                 <a href="{{route('profile')}}"><button class="w-16 h-16"><img src="{{asset('storage/other/user.png')}}" alt=""></button></a>
             </div>
@@ -88,6 +105,17 @@
 
 
     <script>
+
+        document.querySelector('#searchButton').addEventListener('click', ()=>{
+            document.querySelector('#searchBar').style.display = 'flex';
+            document.querySelector('html').style.overflowY = 'hidden';
+        })
+
+        document.querySelector('#openBacket').addEventListener('click', ()=>{
+            document.querySelector('#backet').style.display = 'flex';
+            document.querySelector('html').style.overflowY = 'hidden';
+        })
+
         // set the default active slide to the first one
         let slideIndex = 1;
         showSlide(slideIndex);
@@ -211,6 +239,11 @@
                 .getElementById(menuId);
             dropdownMenu.classList.toggle('hidden');
         }
+        document.querySelector('#closeBacket').addEventListener('click', () => {
+            document.querySelector('#backet').style.display = 'none';
+            document.querySelector('html').style.overflowY = 'visible';
+        })
+
     </script>
 
 </x-main-layout>

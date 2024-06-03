@@ -54,4 +54,8 @@ class User extends Authenticatable
     public function bills(){
         return $this->hasMany(Bill::class);
     }
+
+    public function medicineInBucet(){
+        return $this->belongsToMany(Medicine::class, 'backet');
+    }
 }
