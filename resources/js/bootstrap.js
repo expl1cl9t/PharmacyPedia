@@ -8,7 +8,7 @@ import axios from 'axios';
 import swal from 'sweetalert2';
 window.axios = axios;
 window.swal = swal;
-window.$ = jquery;
+
 
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

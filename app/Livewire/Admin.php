@@ -43,7 +43,7 @@ class Admin extends Component
                 'Cost' => $this->MedicineCost,
                 'Type' => $this->TypeOfMedicine,
                 'ImageLink' => $name,
-                'isOnlyPrescription' => $this->medicineIsOnlyPerception,
+                'isOnlyPrescription' => $this->medicineIsOnlyPerception ? 1 : 0,
             ]);
             $this->dispatch('medicineAdded');
         }

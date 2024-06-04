@@ -12,4 +12,8 @@ class TypeOfMedicine extends Model
     protected $fillable = [
         'TypeName'
     ];
+
+    public function medicines(){
+        return $this->hasMany(Medicine::class, 'Type');
+    }
 }

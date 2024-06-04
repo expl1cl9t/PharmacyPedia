@@ -21,4 +21,7 @@ class Medicine extends Model
     {
         return $this->belongsTo(TypeOfMedicine::class, 'Type');
     }
+    public function inBills(){
+        return $this->hasMany(Bill::class);
+    }
 }

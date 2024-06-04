@@ -5,13 +5,11 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://api-maps.yandex.ru/v3/?apikey=2433104e-1b8a-4d46-95a4-40303942fe61&lang=ru_RU"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <title>{{$title}}</title>
+    <title>Оформление заказа</title>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 </head>
 <body>
-    {{$slot}}
+    <livewire:make-order/>
 </body>
 </html>

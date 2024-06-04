@@ -1,6 +1,5 @@
 <button class="w-16 h-16" wire:click="addToCart" {{$isInCart ? '' : 'disabled'}}>
     @if($isInCart)
-
         <img id="crdimage" src="{{asset('storage/other/cart.png')}}" alt="">
     @else
         <img id="crdimage" src="{{asset('storage/other/alreadyIncath.png')}}" alt="">
@@ -15,6 +14,13 @@
                     icon: 'success'
                 });
                 document.querySelector('#crdimage').src = "{{asset('storage/other/alreadyIncath.png')}}";
+            })
+            $wire.on('AcessToBlockedItem', ({med})=>{
+                swal.fire({
+                    title: 'Товар недоступен',
+                    text: med + ' недоступен для покупки в данный момент',
+                    icon: 'info'
+                });
             })
         </script>
     @endscript

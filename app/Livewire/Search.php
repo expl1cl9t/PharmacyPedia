@@ -12,12 +12,16 @@ class Search extends Component
 
     public $search;
 
+    public function doSearch()
+    {
+        $this->medicines = Medicine::where('name', 'like', '%' . $this->search . '%')->get();
+    }
+
     public function mount(){
         $this->medicines = Medicine::all();
     }
     public function render()
     {
-        $this->medicines = Medicine::where('name', 'like', '%' . $this->search . '%')->get();
         return view('livewire.search');
     }
 }

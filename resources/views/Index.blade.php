@@ -1,5 +1,6 @@
 <x-main-layout title="Главная страница">
     <livewire:search/>
+    <livewire:send-message-to-bot/>
     <div id="backet" class="absolute w-full h-screen bg-black z-20 bg-opacity-40 hidden flex-col items-center justify-center">
         <button id="closeBacket" class="absolute top-5 right-5 text-5xl text-white">X</button>
         <div class="w-1/2 h-auto bg-white flex flex-col rounded-2xl p-5 justify-center items-center gap-6">
@@ -14,7 +15,7 @@
             @empty
                 <p>Вы пока не добавили товаров в корзину!</p>
             @endforelse
-            <button>Оформить заказ</button>
+                <a href="{{route('makeOrder')}}"><button>Оформить заказ</button></a>
         </div>
     </div>
     <div class="w-full h-screen flex flex-col gap-6" style="background-image: url('{{asset('storage/backs/indexFont.jpg')}}')">
@@ -30,7 +31,7 @@
                         ring-black ring-opacity-5 animate-fadeIn"
                          id="dropdownMenuBottom">
                         @foreach(\App\Models\TypeOfMedicine::all() as $med)
-                            <a href="#" class="block px-4 py-2 text-sm
+                            <a href="{{route('catalog',['type' => $med->id])}}" class="block px-4 py-2 text-sm
                                    text-gray-700
                                    hover:bg-gray-100">
                                 {{$med->TypeName}}
@@ -38,15 +39,15 @@
                         @endforeach
                     </div>
                 </div>
-                <button class="w-14 h-14"><img src="{{asset('storage/other/mobila.png')}}" alt=""></button>
-                <button id="openBacket" class="w-14 h-14"><img src="{{asset('storage/other/cart.png')}}"></button>
+                <button onclick="window.location.href = 'https://t.me/mednotif_bot'" class="w-12 h-12"><img src="{{asset('storage/other/mobila.png')}}" alt=""></button>
+                <button id="openBacket" class="w-16 h-16"><img src="{{asset('storage/other/cart.png')}}"></button>
             </div>
             <div class="flex flex-row items-center">
                 <img class="h-64 w-64" src="{{asset('storage/other/logo.png')}}" alt="">
             </div>
             <div class="w-auto flex flex-row items-center gap-6">
                 <input id="searchButton" type="text" placeholder="я ищу, например, ингавирин" class="text-sm w-96 h-1/2 pl-20 pr-20 border-gray-500 border-2 text-gray-500 rounded-3xl bg-white">
-                <button title="Бот-помошник" class="w-16 h-16"><img src="{{asset('storage/other/mail.png')}}" alt=""></button>
+                <button id="openBot" title="Бот-помошник" class="w-16 h-16"><img src="{{asset('storage/other/mail.png')}}" alt=""></button>
                 <a href="{{route('profile')}}"><button class="w-16 h-16"><img src="{{asset('storage/other/user.png')}}" alt=""></button></a>
             </div>
         </div>
@@ -55,27 +56,17 @@
             <p class="font-serif text-8xl text-black  font-bold">Бот - консультант лично для вас</p>
         </div>
     </div>
-    <div class="text-5xl w-full h-screen flex flex-col items-center gap-6 mt-10">
-        <p>Наша энциклопедия лекарств</p>
+    <div class="text-5xl w-full h-screen flex justify-center flex-col items-center gap-6 mt-10">
+        <p class="mb-10">Наша энциклопедия лекарств</p>
         <div class="relative w-1/4 1/4 mx-auto">
-            <div class="slide relative">
-                <img class="w-full h-full object-cover"
-                     src="{{asset('storage/other/booka.png')}}">
-                <div class="absolute bottom-0 w-full px-5 py-3 bg-black/40 text-center text-white">Против аллергии</div>
-            </div>
-
-            <div class="slide relative">
-                <img class="w-full h-full object-cover"
-                     src="{{asset('storage/other/booka.png')}}">
-                <div class="absolute bottom-0 w-full px-5 py-3 bg-black/40 text-center text-white">Против головной боли</div>
-            </div>
-
-            <div class="slide relative">
-                <img class="w-full h-full object-cover"
-                     src="{{asset('storage/other/booka.png')}}">
-                <div class="absolute bottom-0 w-full px-5 py-3 bg-black/40 text-center text-white">Обезбаливающие
+            @foreach(\App\Models\TypeOfMedicine::all() as $type)
+                <div class="slide relative">
+                    <img class="w-full h-full object-cover"
+                         src="{{asset('storage/other/booka.png')}}">
+                    <div class="absolute bottom-0 w-full px-5 py-3 bg-black/40 text-center text-white">{{$type->TypeName}}
+                    </div>
                 </div>
-            </div>
+            @endforeach
 
             <!-- The previous button -->
             <a class="absolute left-0 top-1/2 p-4 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white hover:text-amber-500 cursor-pointer"
@@ -90,16 +81,17 @@
 
         <!-- The dots -->
         <div class="flex justify-center items-center space-x-5">
-            <div class="dot w-4 h-4 rounded-full cursor-pointer" onclick="currentSlide(1)"></div>
-            <div class="dot w-4 h-4 rounded-full cursor-pointer" onclick="currentSlide(2)"></div>
-            <div class="dot w-4 h-4 rounded-full cursor-pointer" onclick="currentSlide(3)"></div>
+            @foreach(\App\Models\TypeOfMedicine::all() as $type)
+                <div class="dot w-4 h-4 rounded-full cursor-pointer" onclick="currentSlide(3)"></div>
+            @endforeach
+
         </div>
     </div>
     <div class="w-full h-screen flex flex-col items-center gap-6 justify-center">
         <img src="{{asset('storage/backs/indexfon1.jpg')}}" class="object-cover w-full h-full absolute -z-10" alt="">
-        <p class="text-5xl">Покажем на карте ближайшие аптеки</p>
+        <p class="text-5xl mb-10">Покажем на карте ближайшие аптеки</p>
         <div class="map-holder">
-            <div id="map" style="resize:both;width: 500px; height: 500px; border: 5px solid rgba(236, 199, 120, 0.616);"></div>
+            <div id="map" style="resize:both;width: 900px; height: 500px; border: 5px solid rgba(236, 199, 120, 0.616);"></div>
         </div>
     </div>
 
@@ -114,6 +106,10 @@
         document.querySelector('#openBacket').addEventListener('click', ()=>{
             document.querySelector('#backet').style.display = 'flex';
             document.querySelector('html').style.overflowY = 'hidden';
+        })
+
+        document.querySelector('#openBot').addEventListener('click', ()=>{
+            document.querySelector('#sendMessage').style.display = 'flex';
         })
 
         // set the default active slide to the first one
@@ -243,6 +239,12 @@
             document.querySelector('#backet').style.display = 'none';
             document.querySelector('html').style.overflowY = 'visible';
         })
+
+        document.querySelector('#searchBar').style.display = 'none';
+
+        let vh = 0;
+
+
 
     </script>
 

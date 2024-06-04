@@ -21,6 +21,10 @@ class AddToCartButton extends Component
     public function addToCart(){
         try {
             $medicine = Medicine::find($this->medicneId);
+            if($medicine->avaliableToBuy == 0){
+                $this->dispatch('AcessToBlockedItem', med: $medicine->Name);
+                return;
+            }
             auth()->user()->medicineInBucet()->attach($medicine);
             $this->cartImage = asset('storage/other/alreadyIncath.png');
             $this->dispatch('addedInCart');
